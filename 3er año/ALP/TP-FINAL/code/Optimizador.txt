@@ -1,0 +1,4 @@
+1 - Realizar seleccion. Para esto conviene agrupar las condiciones
+con la tabla que corresponda.
+2 - Si la selección necesita la clave está bueno tener creado un índice.
+3 - Hacer una descomposición de la consulta para poder procesarla en paralelo.

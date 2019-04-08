@@ -1,0 +1,1 @@
+def P = let id = (\x:B->B.x) in id (\x:B.x)

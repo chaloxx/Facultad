@@ -1,0 +1,73 @@
+              Proyecto Final ALP
+              ------------------
+
+
+ INTRO
+ El proyeto llevado a cabo es una implementación del lenguaje SQL (Structured Query Language), el cual permite crear, modificar y eliminar bases de datos (conjuntos de datos persistentes pertenecientes a un mismo contexto)  y a la vez permite hacer consultas sobre las mismas. Las BD SQL, como se las suele denominar, han jugado un rol fundamental en el paso de los años en el desarrollo de empresas, ya que proveen mecanismos automatizados para el almacen y la consulta de los datos pertinente a las empresas, además de asegurar la consistencia y seguridad de los mismos.
+ Hoy en día encontramos otro tipo de BD denominadas NoSQL (Not Only SQL) usadas principalmente por las redes sociales y  para el procesamiento de grandes volúmenes de datos, para los cuales los estructuras tradicionales de almacenamiento y consulta enfrentan problemas de escalabilidad y rendimiento. Las BD NoSQL no usan el modelo relacional (o a lo sumo lo usan como apoyo) sino que se sirven de otras estructuras como los que proveen las tablas hash, los documentos, los grafos y la orientación a objetos.
+ Elegí implementar un SGBD (Sistema Gestor de Base de Datos) que utiliza el modelo relacional para aprender sobre su funcionamiento interno y porque ofrece una sintaxis sencilla (por lo menos en sus operaciones básicas) que permite operar a trávez del álgebra relacional y el cálculo de dominio de tuplas.
+
+
+
+DISEÑO
+ El alcance de este proyecto es representar las operaciones básicas que proporciona el estándar de SQL. Con este fin, separaremos el lenguaje en 2 partes : DDL (lenguaje de diseño de datos) y DML (lenguaje de manejo de datos). Habrá una tercera parte, MUL (Lenguaje de Manejo de Usuario) con operaciones básicas para crear un usuario ,acceder a él o eliminarlo.
+ Presentamos el AST del lenguaje:
+
+      SQL ::= DML | DDL | MUL | SQL ; SQL
+
+      DDL ::=   CREATE BASE name
+              | DROP BASE name
+              | CREATE TABLE name ( COLUMNS ) PRIMARY KEY fieldNames  FOREIGN KEY fieldNames REFERENCE tableName ON DELETE refOption
+                ON UPDATE refOption
+              | DROP TABLE name
+              | USE BASE name
+              | SHOW BASES
+              | SHOW TABLES
+
+      refOption ::= RESTRICTED | CASCADES | NULLIFIES
+
+      COLUMNS ::= name Type HaveNull | Columns , Columns
+
+      DML ::=   INSERT FIELD  TreeListArgs
+              | DELETE FIELD WHERE BoolExpW
+              | UPDATE FIELD SET ToUpdate WHERE BoolExpW
+              | Query
+
+      Query ::=    Query UNION Query
+                 | Query DIFF Query
+                 | Query INTERSECT Query
+                 | Query0
+
+
+      Query0 ::= SELECT Distinct [ArgS] Query1
+      Query1 ::= FROM [ArgF] Query2
+      Query2 ::= WHERE BoolExp  Query3 | END
+      Query3 ::= GROUBY [Args] Query4 | END
+      Query4 ::= HAVING BoolExp  Query5 | END
+      Query5 ::= ORDERBY [Args] O Query6 | END
+      Query6 ::= LIMIT number END
+
+      ArgS  ::= ArgS , ArgS | Exp
+
+      Exp  ::=  FIELD
+              | Aggregate
+              | Exp AS FIELD
+              | ( Query0 ) AS FIELD
+              | FIELD.FIELD
+              | ALL
+              | IntExp
+
+      IntExp ::= Exp + Exp
+               | Exp - Exp
+               | Exp * Exp
+               | Exp / Exp
+               | ( Exp )
+               | - Exp
+               | NUM
+
+
+      ArgF ::= Fields
+             | ArgF , ArgF
+             | ( Query ) AS FIELD
+
+      Fields ::= FIELD | Fields , Fields

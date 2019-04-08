@@ -1,0 +1,8 @@
+//Obtener primeros 50 pares
+i := 0;
+if 1 < 10 & true then
+  while i < 100 do
+    i := i+1;
+    if i = 99 then z := z + 1
+    else skip end
+else y:=7 end

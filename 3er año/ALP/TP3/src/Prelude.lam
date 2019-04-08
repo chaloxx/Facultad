@@ -1,0 +1,14 @@
+def I = \x:B. x
+def K = \x:B.\y:B.x
+def S = \x:B->B->B.\y:B->B.\z:B.(x z) (y z)
+
+def pre = \x:N. R (0) (\y:N.\z:N.z) (x)
+def add = \x:N. \y:N. R (y) (\a:N.\b:N. suc (a)) (x)
+def mul = \x:N. \y:N. R (0) (\a:N.\b:N. add y a) (x)
+def fac = \x:N. R (suc (0)) (\a:N.\b:N. mul (suc (b)) a) (x)
+def ack = \m:N. R (\n:N.suc (n))
+                    (\f:N->N.\y:N.(\b:N. R (f (suc (0))) (\c:N.\d:N. f c) (b)))
+                    (m)
+
+
+def dif = \m:N.\n:N. R (m) (\r:N.\y:N. pre r) (n)                  

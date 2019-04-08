@@ -1,0 +1,153 @@
+/* Item 1) Obtener los nombres de los duenos de los inmuebles */ 
+\project_{nombre, apellido} (
+    PoseeInmueble
+
+    \join_{codigo_propietario = codigo} 
+   
+    Persona
+);
+
+
+/* Item 2) */
+\project_{codigo} (
+    \select_{precio >= 600000 and precio <= 700000} INMUEBLE
+);
+
+
+/*Item 3)*/
+\project_{nombre, apellido} (
+    (\project_{codigo} \select_{nombre = "Mirta" and apellido = "Gonzalez"} PERSONA)
+    \join_{codigo = vendedor}
+    (\rename_{codCliente, vendedor} CLIENTE)
+
+    \join_{codCliente = codPersona}
+
+    \rename_{codPersona,nombre,apellido,domicilio,telefono} PERSONA
+);
+
+
+/*Item 4)*/
+\project_{nombre, apellido, codigo, direccion} (
+    \project_{nombre,apellido,nombre_poblacion, nombre_zona} (PREFIEREZONA \join_{codigo = codigo_cliente} PERSONA)
+
+    \join
+
+    INMUEBLE
+);
+
+/*Item 5*/
+\project_{nombre, apellido} (
+    (
+        \project_{codigo_cliente}
+        \select_{nombre_zona = "Norte" and nombre_poblacion = "Santa Fe"}
+        PREFIEREZONA
+
+        \diff
+
+        \project_{codigo_cliente}
+        \select_{nombre_zona <> "Norte" or nombre_poblacion <> "Santa Fe"}
+        PREFIEREZONA
+    )
+
+    \join_{codigo = codigo_cliente}
+
+    PERSONA
+);
+
+/*Item 6*/
+\project_{nombre, apellido}(
+    \project_{vendedor} (
+        \project_{codigo_cliente} (
+            \select_{nombre_zona = "Centro" and nombre_poblacion = "Rosario"}
+            (PREFIEREZONA \join PERSONA)
+        )
+
+        \join_{codigo_cliente = codigo}
+
+        CLIENTE
+    )
+
+    \join_{vendedor = codigo}
+
+    PERSONA
+);
+
+/*Item 7*/
+\project_{nombre, apellido} (
+    \project_{vendedor} (VENDEDOR \join CLIENTE)
+
+    \join_{vendedor = codigo}
+
+    PERSONA
+);
+
+/*Item 8*/
+\project_{nombre,apellido,telefono, nombreVen,apellidoVen} (
+    \project_{vendedor,nombre,apellido,telefono} (
+        (
+            \project_{codigo_cliente} (\select_{fecha_hora >= "2014-11-06 10:00:00" and fecha_hora <= "2014-11-08 10:00:00"} VISITAS)
+
+            \join_{codigo_cliente = codigo}
+
+            CLIENTE
+        )
+
+        \join
+
+        PERSONA
+    )
+
+    \join_{vendedor = codigo}
+
+    \rename_{codigo, nombreVen, apellidoVen, domicilio, telefonoVen} PERSONA
+);
+ 
+/*Item 9*/
+\project_{nombre, apellido} (
+    \project_{codigo_cliente} (
+        \project_{codigo_cliente} PREFIEREZONA
+
+        \diff
+
+        (
+            \project_{codigo_cliente} (
+                \project_{codigo_cliente} PREFIEREZONA \cross \select_{nombre_poblacion = "Rosario"} ZONA
+
+                \diff
+
+                PREFIEREZONA
+            )
+        )
+    )
+
+    \join_{codigo_cliente = codigo}
+
+    PERSONA
+);
+
+/*Item 10*/
+\project_{nombre, apellido, fecha_hora} (
+    \select_{vendedor = vendedor2 and fecha_hora = fecha_hora2 and codigo_inmueble <> codigo_inmueble2} (
+        \project_{codigo_inmueble, fecha_hora, vendedor} (
+            VISITAS
+
+            \join_{codigo_cliente = codigo}
+
+            CLIENTE
+        )
+
+        \cross
+
+        \project_{codigo_inmueble2, fecha_hora2, vendedor2} (
+            \rename_{codigo_cliente, codigo_inmueble2, fecha_hora2} VISITAS
+
+            \join_{codigo_cliente = codigo}
+
+            \rename_{codigo, vendedor2} CLIENTE
+        )
+    )
+
+    \join_{vendedor = codigo}
+
+    PERSONA
+);

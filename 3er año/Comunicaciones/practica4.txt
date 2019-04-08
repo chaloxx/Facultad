@@ -1,0 +1,135 @@
+ Ej3)
+        ---- named.conf para ns1 ----
+        
+        zone "basel.net" {
+            type master;
+            file "basel.net.db";        
+        }
+        
+        zone "3.8.0.8.3.1.1.f.0.8.8.2.3.0.a.2.IP6.ARPA"{
+            type slave;
+            file "basel.rev.db";
+            masters {2a03:2880:f113:8083:face:b00c:0:25de;};
+        }
+        
+        zone "0.0.0.1.4.9.2.2.c.7.6.1.0.0.2.IP6.ARPA" {
+            type slave;
+            file "basel.rev2.db";
+            masters {2a03:2880:f113:8083:face:b00c:0:25de;};
+        }
+
+       ---- fin named.conf para ns1 ----
+       
+       
+       ---- named.conf para ns2 ----
+       
+       zone "basel.net" {
+            type slave;
+            file "basel.net.db";
+            masters {2001:67c:2294:1000:0:0:0:f199;};        
+        } 
+        
+        zone "3.8.0.8.3.1.1.f.0.8.8.2.3.0.a.2.IP6.ARPA"{
+            type master;
+            file "basel.rev.db";
+        }
+        
+        zone "0.0.0.1.4.9.2.2.c.7.6.1.0.0.2.IP6.ARPA" {
+            type master;
+            file "basel.rev2.db";            
+        }
+        
+        
+        ---- basel.net.db para ns1 (no existe para ns2) ----
+        
+        $Origin basel.net
+        @         IN          SOA      ns1       hostmaster.hotmail.com (2018111201;5 h ; 15 min; 3w; 5h)
+		                      IN       NS        ns1
+		                      IN       NS        ns2.ba
+		                      IN       MX        mx.ros
+		                      
+        www      IN          AAAA      2001:67c:2294:1000:0:0:0:f199
+        ns1      IN          CNAME     www
+        ns2.ba   IN          AAAA      2603:2880:f113:8023:face:b00c:0:25de
+        
+        ---- fin basel.net.db ----
+        
+  Ej 4)
+       ---- named.conf para ns1 ----
+       
+       zone "lcc.ar" {
+	        type master;
+	        file "lcc.ar.db";
+       }		            
+       
+       zone "comunic.lcc.ar" {
+	        type slave;
+	        file "comunic.lcc.ar.db";
+       }
+       
+       zone "235.168.192.in-addr.arpa" {
+            type master;
+            file "./235.168.192.in-addr.arpa.db";
+       
+       }
+       
+       zone "acme.ar"{
+	        type slave;
+	        file "acem.ar.db";
+	        masters{192.168.254.237;};
+       }          
+       
+       
+       
+       ---- fin named.conf para ns1
+       
+       ---- named.conf para ns2 ----
+       
+       zone "lcc.ar" {
+            type slave;
+            file "lcc.ar.db";
+            masters {192.168.235.1;};
+       }
+       
+       
+       zone "235.168.192.in-addr.arpa" {
+            type slave;
+            file "./235.168.192.db"
+            masters {192.168.235.1;};
+       } 
+       
+       ---- fin named.conf para ns2 ----
+       
+       ---- named.conf para ns ----
+       zone "128/25.235.168.192.in-addr.arpa"{
+             type master;
+             file "subnet.192.168.235.bd";
+       }
+       --- fin named.conf para ns ----
+       
+       
+       ---- lcc.ar.db para ns1 (no existe para ns2) ----
+       $Origin lcc.ar
+       @     IN     SOA    ns1     hostmaster.hotmail.com (2018112601; 5h; 13 min; 3 w; 5h)
+                    IN     NS      ns1
+                    IN     NS      ns2
+                    
+       ns1   IN     A      192.168.235.1
+       ns2   IN     A      192.168.235.2
+       comunic   IN    NS    ns.comunic
+                 IN    NS    ns1
+       ns.comunic  IN      A         192.168.235.160                           
+       
+       
+       
+       
+       
+      
+       
+		                      
+         
+        
+        
+        
+
+

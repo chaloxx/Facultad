@@ -1,0 +1,12 @@
+/* Item 0) Obtener los nombres de los duenos de los inmuebles */ 
+
+\project_{nombre,apellido} (
+
+  PoseeInmueble
+
+  \join_{codigo_propietario = codigo}    
+
+  Persona
+
+);
+

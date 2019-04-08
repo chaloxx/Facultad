@@ -1,0 +1,7 @@
+i := 0;
+repeat 
+  z := 0;
+  while z < 10 do i := i+1; z := z+1
+until i = 100 
+end
+	

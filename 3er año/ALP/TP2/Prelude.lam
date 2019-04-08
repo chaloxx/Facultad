@@ -1,0 +1,68 @@
+add
+-- identidad
+def id = \x . x 
+
+-- Booleanos
+def true = \ t f . t
+def false = \t f . f
+
+def and = \a b. a b false
+def or  = \a b. a true b
+
+-- Pares
+def pair = \x y p . p x y
+
+def fst = \p . p true
+def snd = \p . p false
+
+-- Numerales de Church
+def zero = \s z . z
+def suc = \n s z . s (n s z)
+
+def is0 = \n . n (\ x . false) true
+
+def add = \n m s z . n s (m s z)
+def mult = \n m s z . n (m s) z
+
+def pred = \ n . fst (n (\p . pair (snd p) (suc (snd p))) (pair zero zero))
+
+--Listas
+def nil = \c n . n
+def cons = \x xs c n . c x (xs c n)
+
+def isnil = \xs . xs (\x ys . false) true
+
+-- Combinador de Punto Fijo
+def Y = \f . (\x . f (x x)) (\x . f (x x))
+
+-- factorial
+def fact = Y (\f n. (is0 n) (suc zero) (mult n (f (pred n)))) 
+
+-- bottom
+def bottom = (\x . x x) (\x . x x)
+
+-- ejercicio 6
+def ite = \b x y. b x y
+def not = \x. ite x false true
+def twice = \x. mult 2 x
+def dif = \x y. y pred x
+def eq = \x y. and (is0 (dif x y)) (is0 (dif y x))
+
+def log = Y (\f x. ite (eq x 1) 0 (add 1 (f (half x)) ))
+
+def half = Y (\f n. ite (or (eq n 0) (eq n 1))  0 (add 1 (f (dif n 2))) )
+
+def mult2 = \a b . b (add a) 0
+def pot = \ a b. b (mult2 a) 1
+def resta = \ a b. b pred a
+
+
+def leaf  = \ l b. l
+def bin = \ a t u l b. b a (t l b) (u l b)
+def isLeaf = \ t . t true (\ a b c. false) 
+def mapBin = \ f t. t leaf (\ a r z. bin (f a) r z)
+def max = \a b. ite (and (is0 (dif a b)) (not (eq a b))) b a
+def heightBin = \ t . t 0 (\a r w. suc(max r w))
+
+
+
