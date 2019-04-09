@@ -1,23 +1,43 @@
-#include "synch.hh"
+#include "port.hh"
+#include "synch_list.hh"
 
-void Port::Port(){
- queu = new SynchList<Int>; // Crear mailbox
- s = new Semaphore(NULL,0);// Semáforo para los threads que llaman a Send
+Port::Port(){
+ lSend = new Lock(NULL);
+ lReceive = new Lock(NULL);
+ llegoMensaje = new Semaphore(NULL,0);
+ tomoMensaje = new Semaphore(NULL,0);
+
 }
 
-void Port::~Port{
-  delete queu;
+Port::~Port(){
+  delete lSend;
+  delete lReceive;
+  delete llegoMensaje;
+  delete tomoMensaje;
 }
 
 
 
 void Port::Send(int message){
- queu-> Append(message); // Agregar contenido al mailbox
- s -> V(); // Espera hasta que termine un Receive
-
+ DEBUG('p',"Hilo %s esta esperando para enviar %d \n",currentThread-> GetName(),message);
+ lSend -> Acquire(); // Proteger el recurso compartido msg
+ msg = message;
+ DEBUG('p',"Hilo %s envio %d \n",currentThread-> GetName(),message);
+ llegoMensaje -> V();// Avisa que llego un mensaje
+ tomoMensaje -> P(); // Espera que se tome el mensaje
+ lSend -> Release(); // Liberar recurso
+ DEBUG('p',"Hilo %s se va \n",currentThread-> GetName());
+ currentThread-> Yield();
 }
 
 void Port::Receive(int* message){
-*message = queu-> Pop(); // Se bloquea hasta que llega algo, equivale a decir que se bloquea hasta que se llame a Send
-s -> P(); // Deja pasar a un thread que haya llamado
+ lReceive -> Acquire(); // Evitar que un thread se adelante a levantar el semaforo
+ DEBUG('p',"Hilo %s esperando mensaje \n",currentThread-> GetName());
+ llegoMensaje -> P(); // Espera la llegada de algun mensaje
+ *message = msg; // Toma el mensaje
+ DEBUG('p',"Hilo %s recibio %d \n",currentThread-> GetName(),*message);
+ tomoMensaje -> V(); // Avisa que el mensaje fue tomado
+ lReceive -> Release();
+ DEBUG('p',"Hilo %s se va \n",currentThread-> GetName());
+ currentThread-> Yield();
 }

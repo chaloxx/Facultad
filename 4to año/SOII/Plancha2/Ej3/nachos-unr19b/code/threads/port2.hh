@@ -20,8 +20,8 @@ class Port {
   void Receive (int*);
 
   private :
-  int msg;
-  Lock *lSend,*lReceive;
-  Semaphore *llegoMensaje,*tomoMensaje;
+  SynchList<int>* queu;
+  Lock *l1,*l2;
+  Semaphore* s;
 
 };

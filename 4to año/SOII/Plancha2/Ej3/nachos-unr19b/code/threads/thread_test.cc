@@ -17,16 +17,17 @@
 #include "port.hh"
 
 #define N 10
-#define MAX 10 /* segundos */
+#define MAX 2 /* segundos */
+#define NUM_THREADS 20
 
 
 Port* p;
 
 void prod(void *arg)
 {
+  int i = *(int*)arg;
   sleep(random()%MAX);
-  printf("El productor produce\n");
-  p-> Send(1);
+  p-> Send(i);
 }
 
 void cons(void *arg)
@@ -34,36 +35,38 @@ void cons(void *arg)
   int* i = new int;
   usleep(random()%MAX);
   p-> Receive(i);
-  printf("El consumidor consume %d\n",*p);
 }
-
-
-
-
-
-
-
-
 
 
 /// Set up a ping-pong between several threads.
 ///
 /// Do it by launching ten threads which call `SimpleThread`, and finally
 /// calling `SimpleThread` ourselves.
-void
-ThreadTest()
-{
-    DEBUG('t', "Entering thread test\n");
+void ThreadTest(){
+  DEBUG('t', "Entering thread test\n");
+  p = new Port();
+  char * names[NUM_THREADS];
+  Thread *threads[NUM_THREADS];
+  char v[10];
+  int *mjes = new int[NUM_THREADS];
+
+  for(int i = 0;i < NUM_THREADS;i++){
+     mjes[i] = i;
+  }
+
+  for (int i = 0 ; i < NUM_THREADS; i++){
+    sprintf(v,"hilo::%d",i);
+    names[i] = new char [64];
+    strcpy(names[i],v);
+    threads[i] = new Thread(names[i]);
+    if (i%2 == 0){
+      threads[i]->Fork(prod,(void *) (mjes+i));
+    }
+    else{
+      threads[i]->Fork(cons,(void *) names[i]);
+    }
+  }
 
 
-    p = new Port();
-    char *name = new char [64];
-    strncpy(name, "2nd", 64);
-    Thread *newThread = new Thread(name);
-    newThread->Fork(prod, NULL);
-
-
-
-
-    cons((void *) "1st");
+ //sleep(MAX);
 }

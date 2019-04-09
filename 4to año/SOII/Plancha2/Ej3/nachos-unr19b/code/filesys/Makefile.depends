@@ -28,6 +28,16 @@ synch.o: ../threads/synch.cc ../threads/synch.hh ../threads/thread.hh \
  ../threads/system.hh ../threads/scheduler.hh ../machine/interrupt.hh \
  ../machine/statistics.hh ../machine/timer.hh ../filesys/synch_disk.hh \
  ../machine/disk.hh ../threads/synch.hh
+port.o: ../threads/port.cc ../threads/port.hh ../threads/synch_list.hh \
+ ../threads/synch.hh ../threads/thread.hh ../lib/utility.hh \
+ ../lib/debug.hh ../machine/system_dep.hh ../machine/machine.hh \
+ ../machine/exception_type.hh ../machine/mmu.hh ../machine/disk.hh \
+ ../machine/translation_entry.hh ../machine/single_stepper.hh \
+ ../userprog/address_space.hh ../filesys/file_system.hh \
+ ../filesys/open_file.hh ../machine/translation_entry.hh ../lib/list.hh \
+ ../lib/utility.hh ../threads/system.hh ../threads/scheduler.hh \
+ ../machine/interrupt.hh ../machine/statistics.hh ../machine/timer.hh \
+ ../filesys/synch_disk.hh ../machine/disk.hh ../threads/synch.hh
 system.o: ../threads/system.cc ../threads/system.hh ../threads/thread.hh \
  ../lib/utility.hh ../lib/debug.hh ../machine/system_dep.hh \
  ../machine/machine.hh ../machine/exception_type.hh ../machine/mmu.hh \
@@ -288,6 +298,16 @@ synch.o: ../threads/synch.hh ../threads/thread.hh ../lib/utility.hh \
  ../userprog/address_space.hh ../filesys/file_system.hh \
  ../filesys/open_file.hh ../machine/translation_entry.hh ../lib/list.hh \
  ../lib/utility.hh
+port.o: ../threads/port.hh ../threads/synch_list.hh ../threads/synch.hh \
+ ../threads/thread.hh ../lib/utility.hh ../lib/debug.hh \
+ ../machine/system_dep.hh ../machine/machine.hh \
+ ../machine/exception_type.hh ../machine/mmu.hh ../machine/disk.hh \
+ ../machine/translation_entry.hh ../machine/single_stepper.hh \
+ ../userprog/address_space.hh ../filesys/file_system.hh \
+ ../filesys/open_file.hh ../machine/translation_entry.hh ../lib/list.hh \
+ ../lib/utility.hh ../threads/system.hh ../threads/scheduler.hh \
+ ../machine/interrupt.hh ../machine/statistics.hh ../machine/timer.hh \
+ ../filesys/synch_disk.hh ../machine/disk.hh ../threads/synch.hh
 synch_list.o: ../threads/synch_list.hh ../threads/synch.hh \
  ../threads/thread.hh ../lib/utility.hh ../lib/debug.hh \
  ../machine/system_dep.hh ../machine/machine.hh \

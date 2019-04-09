@@ -13,6 +13,11 @@ synch.o: ../threads/synch.cc ../threads/synch.hh ../threads/thread.hh \
  ../lib/list.hh ../lib/utility.hh ../threads/system.hh \
  ../threads/scheduler.hh ../machine/interrupt.hh ../machine/statistics.hh \
  ../machine/timer.hh
+port.o: ../threads/port.cc ../threads/port.hh ../threads/synch_list.hh \
+ ../threads/synch.hh ../threads/thread.hh ../lib/utility.hh \
+ ../lib/debug.hh ../machine/system_dep.hh ../lib/list.hh \
+ ../lib/utility.hh ../threads/system.hh ../threads/scheduler.hh \
+ ../machine/interrupt.hh ../machine/statistics.hh ../machine/timer.hh
 system.o: ../threads/system.cc ../threads/system.hh ../threads/thread.hh \
  ../lib/utility.hh ../lib/debug.hh ../machine/system_dep.hh \
  ../threads/scheduler.hh ../lib/list.hh ../lib/utility.hh \
@@ -63,6 +68,11 @@ scheduler.o: ../threads/scheduler.hh ../threads/thread.hh \
 synch.o: ../threads/synch.hh ../threads/thread.hh ../lib/utility.hh \
  ../lib/debug.hh ../machine/system_dep.hh ../lib/list.hh \
  ../lib/utility.hh
+port.o: ../threads/port.hh ../threads/synch_list.hh ../threads/synch.hh \
+ ../threads/thread.hh ../lib/utility.hh ../lib/debug.hh \
+ ../machine/system_dep.hh ../lib/list.hh ../lib/utility.hh \
+ ../threads/system.hh ../threads/scheduler.hh ../machine/interrupt.hh \
+ ../machine/statistics.hh ../machine/timer.hh
 synch_list.o: ../threads/synch_list.hh ../threads/synch.hh \
  ../threads/thread.hh ../lib/utility.hh ../lib/debug.hh \
  ../machine/system_dep.hh ../lib/list.hh ../lib/utility.hh

@@ -41,6 +41,7 @@
 
 #include "lib/utility.hh"
 
+
 #ifdef USER_PROGRAM
 #include "machine/machine.hh"
 #include "userprog/address_space.hh"
@@ -117,6 +118,9 @@ public:
     /// The thread is done executing.
     void Finish();
 
+    /// Bloquear llamante hasta que sus hilos terminen
+    void Join();
+
     /// Check if thread has overflowed its stack.
     void CheckOverflow() const;
 
@@ -141,6 +145,9 @@ private:
 
     /// Allocate a stack for thread.  Used internally by `Fork`.
     void StackAllocate(VoidFunctionPtr func, void *arg);
+
+    Port *p;
+    int hijos;
 
 #ifdef USER_PROGRAM
     /// User-level CPU register state.

@@ -40,6 +40,8 @@ IsThreadStatus(ThreadStatus s)
 /// * `threadName` is an arbitrary string, useful for debugging.
 Thread::Thread(const char *threadName)
 {
+    p = new Port();
+    hijos = 0;
     name     = threadName;
     stackTop = nullptr;
     stack    = nullptr;
@@ -307,6 +309,14 @@ Thread::RestoreUserState()
 {
     for (unsigned i = 0; i < NUM_TOTAL_REGS; i++)
         machine->WriteRegister(i, userRegisters[i]);
+}
+
+
+void Thread::Join(){
+  while(hijos > 0){
+    p -> Receive();
+  }
+
 }
 
 #endif
